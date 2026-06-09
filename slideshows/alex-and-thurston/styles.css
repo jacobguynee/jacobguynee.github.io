@@ -1,0 +1,520 @@
+/* ── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: #000; }
+
+/* ── Slide Engine ─────────────────────────────── *
+ * Fixed 1400x800 canvas, centered in viewport,
+ * scaled with CSS transform only (never zoom).
+ * All px values inside are in slide coordinates.
+ */
+:root {
+  --slide-w: 1400;
+  --slide-h: 800;
+  --bg: #f4f6f9;
+  --fg: #2c3e50;
+  --heading: #1a2530;
+  --accent: #5b7fa5;
+  --accent-warm: #7f9bb5;
+  --box-bg: rgba(52,73,94,0.06);
+  --deck-bg: #dde2e8;
+}
+#deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--deck-bg);
+}
+.slide {
+  position: absolute;
+  width: 1400px;
+  height: 800px;
+  background: var(--bg);
+  padding: 50px 80px;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--fg);
+  font-size: 32px;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  overflow: hidden;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Typography ────────────────────────────────── */
+h1, h2, h3 {
+  color: var(--heading);
+  font-weight: 600;
+}
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.6em;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.katex { font-size: 1.05em; }
+.katex-display { margin: 0.6em 0; }
+
+/* Center content wrapper for non-split slides */
+.slide-body {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Title slide ──────────────────────────────── */
+.title-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title-slide h1 {
+  font-size: 2.4em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.1em;
+}
+.title-slide .author {
+  margin-top: 1.8em;
+  font-size: 0.65em;
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+}
+.title-slide .decorative-line {
+  width: 140px;
+  height: 2px;
+  background: var(--accent);
+  margin: 1.4em auto 0;
+  border: none;
+  border-radius: 1px;
+}
+
+/* ── Content elements ─────────────────────────── */
+.definition-box {
+  background: var(--box-bg);
+  border-left: 3px solid var(--accent);
+  padding: 0.8em 1.2em;
+  border-radius: 0 8px 8px 0;
+  margin: 0.8em 0;
+  text-align: left;
+  font-size: 0.88em;
+}
+.definition-box .label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7em;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+  margin-bottom: 0.3em;
+}
+ul.clean {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.88em;
+}
+ul.clean li {
+  padding: 0.25em 0;
+  padding-left: 1.4em;
+  position: relative;
+}
+ul.clean li::before {
+  content: "\203A";
+  position: absolute;
+  left: 0.3em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── Fragments (click to reveal) ──────────────── */
+.frag {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.frag.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Split layout ─────────────────────────────── */
+.split-layout {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 60px);
+}
+.split-content {
+  transition: max-width 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              margin 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.split-layout.active .split-content {
+  max-width: 620px;
+  margin: 0;
+}
+.split-visual {
+  position: absolute;
+  top: 0;
+  left: 620px;
+  width: 700px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.split-layout.active .split-visual {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Popup overlay ────────────────────────────── */
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244,246,249,0.85);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.popup-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.popup-overlay .popup-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  padding: 1.2em 2em;
+  max-width: 80%;
+  text-align: center;
+  font-size: 0.95em;
+  border-left: 4px solid var(--accent);
+}
+
+/* ── Wipe reveal (diagonal, top-left → bottom-right) ── */
+.wipe-reveal {
+  clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.wipe-reveal.visible {
+  clip-path: polygon(-20% -20%, 120% -20%, 120% 120%, -20% 120%);
+}
+
+/* ── Blur overlay (for matrix abstraction) ────── */
+.blur-target {
+  transition: filter 0.5s ease;
+}
+.blur-target.blurred {
+  filter: blur(4px);
+}
+.blur-label {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.blur-label.visible {
+  opacity: 1;
+}
+
+/* ── Fade-out targets (visible by default, hidden when .hidden-out) ── */
+.fade-out-target {
+  transition: opacity 0.5s ease, max-height 0.5s ease, margin 0.5s ease, padding 0.5s ease;
+}
+.fade-out-target.hidden-out {
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── Inline collapse (horizontal shrink for flex slide) ── */
+.inline-collapse {
+  display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  transition: opacity 0.5s ease, max-width 0.5s ease, max-height 0.5s ease, margin 0.5s ease, padding 0.5s ease;
+}
+.inline-collapse.hidden-out {
+  max-width: 0 !important;
+}
+
+/* ── Woosh (scale up then immediately reverse) ── */
+@keyframes woosh {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.4); }
+  50%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(0.4); }
+}
+.woosh-text {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 20;
+}
+.woosh-text.visible {
+  animation: woosh 1s ease-in-out forwards;
+}
+.woosh-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(244,246,249,0.7);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 19;
+  transition: opacity 0.3s ease;
+}
+.woosh-backdrop.visible {
+  opacity: 1;
+}
+
+/* ── Animations (show/hide) ───────────────────── */
+.proj-anim { opacity: 0; transition: opacity 0.5s ease; }
+.proj-anim.visible { opacity: 1; }
+
+.collapsed {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  transition: all 0.5s ease;
+}
+#meridian-bullet {
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  transform: translateY(60px);
+}
+#meridian-bullet.visible {
+  transform: translateY(0);
+}
+
+/* ── Newton polytope SVG ──────────────────────── */
+.newton-svg text { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+.newton-points circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.newton-points.visible circle { transform: scale(1); }
+.newton-points.visible circle:nth-child(1) { transition-delay: 0.00s; }
+.newton-points.visible circle:nth-child(2) { transition-delay: 0.05s; }
+.newton-points.visible circle:nth-child(3) { transition-delay: 0.10s; }
+.newton-points.visible circle:nth-child(4) { transition-delay: 0.15s; }
+.newton-points.visible circle:nth-child(5) { transition-delay: 0.20s; }
+.newton-points.visible circle:nth-child(6) { transition-delay: 0.25s; }
+
+.newton-poly { opacity: 0; transition: opacity 0.5s ease; }
+.newton-poly.visible { opacity: 1; }
+.newton-outline { stroke-dasharray: 500; stroke-dashoffset: 500; transition: stroke-dashoffset 0.8s ease; }
+.newton-outline.visible { stroke-dashoffset: 0; }
+.newton-example { opacity: 0; transition: opacity 0.4s ease; }
+.newton-example.visible { opacity: 1; }
+
+/* ── Dot pop-in animation (reusable) ──────────── *
+ * Apply to any <g> containing <circle> children.
+ * Circles scale from 0 with a staggered bouncy pop.
+ * Toggle .visible on the group to trigger.
+ */
+.dot-pop circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dot-pop.visible circle { transform: scale(1); }
+.dot-pop.visible circle:nth-child(1)  { transition-delay: 0.00s; }
+.dot-pop.visible circle:nth-child(2)  { transition-delay: 0.05s; }
+.dot-pop.visible circle:nth-child(3)  { transition-delay: 0.10s; }
+.dot-pop.visible circle:nth-child(4)  { transition-delay: 0.15s; }
+.dot-pop.visible circle:nth-child(5)  { transition-delay: 0.20s; }
+.dot-pop.visible circle:nth-child(6)  { transition-delay: 0.25s; }
+.dot-pop.visible circle:nth-child(7)  { transition-delay: 0.30s; }
+.dot-pop.visible circle:nth-child(8)  { transition-delay: 0.35s; }
+.dot-pop.visible circle:nth-child(9)  { transition-delay: 0.40s; }
+.dot-pop.visible circle:nth-child(10) { transition-delay: 0.45s; }
+
+/* ── Thank You ────────────────────────────────── */
+.thank-you {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 5em;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.thank-you.visible {
+  animation: thankyou-entrance 5s ease forwards;
+}
+@keyframes thankyou-entrance {
+  0%   { opacity: 0; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0) rotate(-10deg); }
+  10%  { opacity: 1; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.1) rotate(3deg); }
+  15%  { opacity: 1; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  35%  { opacity: 1; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  60%  { opacity: 1; top: 20px; left: calc(100% - 200px); transform: translate(-50%, 0) scale(0.28) rotate(360deg); }
+  100% { opacity: 1; top: 20px; left: calc(100% - 200px); transform: translate(-50%, 0) scale(0.28) rotate(720deg); }
+}
+/*
+ * Single choreographed dance: 50s cycle.
+ * ~2s per move, ~1.5s rest between. B = base transform.
+ * 12 moves total, max 1 active at a time.
+ */
+.thank-you.visible {
+  animation: thankyou-entrance 5s ease forwards, thankyou-dance 50s ease-in-out 5s infinite;
+}
+@keyframes thankyou-dance {
+  /* B = translate(-50%,0) scale(0.28) */
+  /* 1: twist */
+  0%   { transform: translate(-50%,0) scale(0.28); }
+  2%   { transform: translate(-50%,0) scale(0.28) skewX(14deg); }
+  4%   { transform: translate(-50%,0) scale(0.28) skewX(-10deg); }
+  6%   { transform: translate(-50%,0) scale(0.28); }
+  /* rest */
+  9%   { transform: translate(-50%,0) scale(0.28); }
+  /* 2: squash */
+  11%  { transform: translate(-50%,0) scale(0.28) scaleX(1.18) scaleY(0.82); }
+  13%  { transform: translate(-50%,0) scale(0.28) scaleX(0.88) scaleY(1.15); }
+  15%  { transform: translate(-50%,0) scale(0.28); }
+  /* rest */
+  18%  { transform: translate(-50%,0) scale(0.28); }
+  /* 3: slow spin */
+  24%  { transform: translate(-50%,0) scale(0.30) rotate(360deg); }
+  26%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  29%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 4: bounce */
+  31%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) translate(8px, -5px); }
+  33%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) translate(-6px, 6px); }
+  35%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  38%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 5: big twist */
+  40%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) skewX(-16deg); }
+  42%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) skewX(12deg); }
+  44%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  47%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 6: squash + twist combo */
+  49%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) skewX(8deg) scaleY(0.85); }
+  51%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) skewX(-8deg) scaleY(1.12); }
+  53%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  56%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 7: bounce + wiggle */
+  58%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) translate(5px,-3px) skewX(6deg); }
+  60%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) translate(-5px,4px) skewX(-6deg); }
+  62%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  65%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 8: stretch tall */
+  67%  { transform: translate(-50%,0) scale(0.28) rotate(360deg) scaleY(1.22) scaleX(0.85); }
+  69%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* rest */
+  72%  { transform: translate(-50%,0) scale(0.28) rotate(360deg); }
+  /* 9: reverse spin */
+  78%  { transform: translate(-50%,0) scale(0.30) rotate(0deg); }
+  80%  { transform: translate(-50%,0) scale(0.28) rotate(0deg); }
+  /* rest */
+  83%  { transform: translate(-50%,0) scale(0.28); }
+  /* 10: gentle twist */
+  85%  { transform: translate(-50%,0) scale(0.28) skewX(8deg); }
+  87%  { transform: translate(-50%,0) scale(0.28) skewX(-6deg); }
+  89%  { transform: translate(-50%,0) scale(0.28); }
+  /* rest */
+  92%  { transform: translate(-50%,0) scale(0.28); }
+  /* 11: squash bounce */
+  94%  { transform: translate(-50%,0) scale(0.28) scaleX(1.15) scaleY(0.85) translate(0,3px); }
+  96%  { transform: translate(-50%,0) scale(0.28) scaleX(0.9) scaleY(1.1) translate(0,-3px); }
+  98%  { transform: translate(-50%,0) scale(0.28); }
+  /* rest → loops back to 0% */
+  100% { transform: translate(-50%,0) scale(0.28); }
+}
+
+/* ── Fullscreen button ────────────────────────── */
+#fullscreen-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.4);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+}
+#fullscreen-btn:hover {
+  background: rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.6);
+}
+:fullscreen #fullscreen-btn { display: none; }
+
+/* ── Progress dots ─────────────────────────────── */
+#progress {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+}
+#progress .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  transition: background 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+#progress .dot.active {
+  background: rgba(0,0,0,0.5);
+  transform: scale(1.3);
+}
+
+/* ── Nav arrows ───────────────────────────────── */
+.nav-arrow {
+  position: fixed;
+  bottom: 20px;
+  z-index: 100;
+  background: none;
+  border: none;
+  color: rgba(0,0,0,0.2);
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px;
+  font-family: system-ui;
+}
+.nav-arrow:hover { color: rgba(0,0,0,0.5); }
+#nav-prev { right: 60px; }
+#nav-next { right: 20px; }
