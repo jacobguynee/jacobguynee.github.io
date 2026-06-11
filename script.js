@@ -27,7 +27,7 @@ const content = {
   slides: {
     title: "The Alexander &amp; Thurston Norms",
     href: "slideshows/alex-and-thurston/index.html",
-    meta: "April 8, 2026",
+    meta: "April 2026",
     note:
       "These slides were built in HTML with no framework, a workflow that is only feasible because of AI.",
   },
@@ -42,7 +42,7 @@ const content = {
   },
   courses: [
     ["Survey of Calculus", "Spring 2026"],
-    ["Combinatorics", "Spring 2026"],
+    ["Combinatorics", "Summer 2026"],
     ["Precalculus", "Fall 2025"],
     ["Combinatorics", "Summer 2025"],
     ["Precalculus", "Fall 2024"],
