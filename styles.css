@@ -42,64 +42,6 @@ button {
   font: inherit;
 }
 
-.format-picker {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 100;
-  font-family: var(--ui);
-}
-
-.format-toggle {
-  min-width: 6.75rem;
-  min-height: 2.5rem;
-  padding: 0 1rem;
-  color: #ffffff;
-  background: #151a1d;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-}
-
-.format-toggle:hover,
-.format-toggle:focus-visible {
-  background: #2a3034;
-}
-
-.format-menu {
-  position: absolute;
-  top: calc(100% + 0.55rem);
-  right: 0;
-  display: none;
-  min-width: 13.5rem;
-  padding: 0.4rem;
-  background: #ffffff;
-  border: 1px solid var(--line-strong);
-  box-shadow: var(--shadow);
-}
-
-.format-picker.open .format-menu {
-  display: grid;
-}
-
-.format-menu button {
-  width: 100%;
-  padding: 0.68rem 0.78rem;
-  color: var(--ink);
-  text-align: left;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-
-.format-menu button:hover,
-.format-menu button:focus-visible,
-.format-menu button.active {
-  color: var(--teal-dark);
-  background: #edf4f4;
-}
-
 .site a:not(.plain-link) {
   color: var(--link, var(--teal));
   text-decoration: underline;
@@ -1082,25 +1024,6 @@ button {
 }
 
 @media (max-width: 560px) {
-  .format-picker {
-    top: auto;
-    right: 0.65rem;
-    bottom: 0.65rem;
-  }
-
-  .format-toggle {
-    min-width: auto;
-    min-height: 2.25rem;
-    padding: 0 0.78rem;
-    font-size: 0.86rem;
-  }
-
-  .format-menu {
-    top: auto;
-    bottom: calc(100% + 0.55rem);
-    max-width: calc(100vw - 1.3rem);
-  }
-
   .dossier-profile-head {
     grid-template-columns: 82px minmax(0, 1fr);
     gap: 0.85rem;

@@ -13,13 +13,15 @@ const content = {
       title:
         "A theory of inductive loops in electrochemical impedance spectroscopy",
       href: "https://arxiv.org/abs/2301.05024",
-      meta: "2023 &middot; with Yury Grabovsky &middot; submitted",
+      year: "2023",
+      meta: "with Yury Grabovsky &middot; submitted",
     },
     {
       title:
         "GT-shadows for the gentle version of the Grothendieck-Teichmueller group",
       href: "https://arxiv.org/abs/2401.06870",
-      meta: "2024 &middot; with Vasily Dolgushev &middot; Journal of Pure and Applied Algebra",
+      year: "2024",
+      meta: "with Vasily Dolgushev &middot; Journal of Pure and Applied Algebra",
     },
   ],
   slides: {
@@ -79,10 +81,6 @@ const content = {
 };
 
 const root = document.querySelector("#site-root");
-const picker = document.querySelector(".format-picker");
-const toggle = document.querySelector(".format-toggle");
-const optionButtons = Array.from(document.querySelectorAll("[data-format-option]"));
-const storageKey = "jacob-site-format";
 
 function externalAttrs(href) {
   return href.startsWith("http") ? ' target="_blank" rel="noopener noreferrer"' : "";
@@ -233,7 +231,7 @@ function dossierTemplate() {
                       <h4>${textLink(paper.href, paper.title)}</h4>
                       <p>${paper.meta}</p>
                     </div>
-                    <p>Paper</p>
+                    <p>${paper.year}</p>
                   </li>
                 `,
               )
@@ -557,66 +555,16 @@ const templates = {
   cards: cardsTemplate,
 };
 
-function readSavedFormat() {
-  try {
-    return localStorage.getItem(storageKey);
-  } catch {
-    return null;
-  }
-}
-
-function readRequestedFormat() {
-  const requested = new URLSearchParams(window.location.search).get("format");
-  return templates[requested] ? requested : null;
-}
-
-function saveFormat(format) {
-  try {
-    localStorage.setItem(storageKey, format);
-  } catch {
-    // File previews can disable storage in some browser configurations.
-  }
-}
-
 function activateFormat(format) {
   const nextFormat = templates[format] ? format : "dossier";
   document.body.dataset.format = nextFormat;
   root.innerHTML = templates[nextFormat]();
-  saveFormat(nextFormat);
-
-  optionButtons.forEach((button) => {
-    const isActive = button.dataset.formatOption === nextFormat;
-    button.classList.toggle("active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
 
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-toggle.addEventListener("click", () => {
-  const isOpen = picker.classList.toggle("open");
-  toggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-optionButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activateFormat(button.dataset.formatOption);
-    picker.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-  });
-});
-
-document.addEventListener("click", (event) => {
-  if (!picker.contains(event.target)) {
-    picker.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-  }
-});
-
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    picker.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
     closeArtLightbox();
   }
 });
@@ -672,4 +620,4 @@ document.addEventListener("click", (event) => {
   }
 });
 
-activateFormat(readRequestedFormat() || "dossier");
+activateFormat("dossier");
