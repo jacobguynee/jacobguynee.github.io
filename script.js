@@ -27,7 +27,7 @@ const content = {
     href: "slideshows/alex-and-thurston/index.html",
     meta: "Student Topology Seminar &middot; April 8, 2026",
     note:
-      "These slides were built in HTML with no framework, a workflow that is only really feasible because of AI.",
+      "These slides were built in HTML with no framework, a workflow that is only feasible because of AI.",
   },
   mentoring: {
     title: "CUBE REU at Vanderbilt",
@@ -60,7 +60,7 @@ const content = {
       href: "mathematical-art/voronoi-madness/",
       meta: "Interactive Voronoi art tool",
       description:
-        "After placing a set of points on the plane, a Voronoi diagram is a cell decomposition of the plane such that each cell contains a unique point <span class=\"math-inline\">p</span>, and this cell is exactly the set of points closer to <span class=\"math-inline\">p</span> than any other point. This app allows one to place large amounts of points on the plane, possibly along text they've drawn or inside of regions they've outlined. The app generates the Voronoi diagram and allows for some color customization. Future features include more coloring options and alternate metrics.",
+        "This app allows one to place large amounts of points on the plane, possibly along text they've drawn or inside of regions they've outlined. The app generates the Voronoi diagram and allows for some color customization. Future features include more coloring options and alternate metrics.",
       visual: "voronoi",
       image: "assets/voronoi-madness-preview.png",
       imageAlt: "Voronoi diagram spelling Go Birds",
@@ -154,7 +154,12 @@ function courseList(className = "course-list") {
 
 function artVisual(item) {
   if (item.image) {
-    return `<img class="art-thumb art-thumb-image" src="${item.image}" alt="${item.imageAlt || `${item.title} preview`}">`;
+    const altText = item.imageAlt || `${item.title} preview`;
+    return `
+      <button class="art-preview-button" type="button" data-art-preview="${item.image}" data-art-preview-alt="${altText}" aria-label="Enlarge ${item.title} preview">
+        <img class="art-thumb art-thumb-image" src="${item.image}" alt="${altText}">
+      </button>
+    `;
   }
 
   return `<span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>`;
@@ -188,7 +193,6 @@ function dossierArtList() {
           </div>
           <div class="art-cv-side">
             ${artVisual(item)}
-            <p>${item.meta}</p>
           </div>
         </li>
       `,
@@ -613,6 +617,58 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     picker.classList.remove("open");
     toggle.setAttribute("aria-expanded", "false");
+    closeArtLightbox();
+  }
+});
+
+function ensureArtLightbox() {
+  let lightbox = document.querySelector("#art-lightbox");
+  if (lightbox) {
+    return lightbox;
+  }
+
+  lightbox = document.createElement("div");
+  lightbox.id = "art-lightbox";
+  lightbox.className = "art-lightbox";
+  lightbox.hidden = true;
+  lightbox.innerHTML = `
+    <button class="art-lightbox-close" type="button" aria-label="Close image preview">&times;</button>
+    <img class="art-lightbox-image" alt="">
+  `;
+  document.body.append(lightbox);
+  return lightbox;
+}
+
+function openArtLightbox(src, alt) {
+  const lightbox = ensureArtLightbox();
+  const image = lightbox.querySelector(".art-lightbox-image");
+  image.src = src;
+  image.alt = alt;
+  lightbox.hidden = false;
+  document.body.classList.add("lightbox-open");
+}
+
+function closeArtLightbox() {
+  const lightbox = document.querySelector("#art-lightbox");
+  if (!lightbox || lightbox.hidden) {
+    return;
+  }
+
+  lightbox.hidden = true;
+  document.body.classList.remove("lightbox-open");
+}
+
+document.addEventListener("click", (event) => {
+  const previewButton = event.target.closest("[data-art-preview]");
+  if (previewButton) {
+    openArtLightbox(previewButton.dataset.artPreview, previewButton.dataset.artPreviewAlt);
+    return;
+  }
+
+  if (
+    event.target.matches(".art-lightbox, .art-lightbox-close")
+  ) {
+    closeArtLightbox();
   }
 });
 
