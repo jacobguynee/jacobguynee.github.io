@@ -285,7 +285,7 @@ function dossierTemplate() {
               <div>
                 <h4>${textLink(content.mentoring.href, content.mentoring.title)}</h4>
                 <p>${content.mentoring.description}</p>
-                <p>Project: ${content.mentoring.project}</p>
+                <p>Project: ${content.mentoring.project} (${textLink(content.mentoring.poster, "poster")})</p>
                 <p>Group: ${content.mentoring.group}</p>
               </div>
               <p>${content.mentoring.meta}</p>
