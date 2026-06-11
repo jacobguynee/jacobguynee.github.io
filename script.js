@@ -52,6 +52,24 @@ const content = {
     'In Spring 2024, I co-coreographed (with <a href="https://sites.google.com/view/aiyko/home" target="_blank" rel="noopener noreferrer">Aiya Kuchukova</a>) an aerial silks act about braids and knots. The performance was part of the <a href="https://atlantasciencefestival.org/events-2024/808-science-of-the-circus/" target="_blank" rel="noopener noreferrer">Science of the Circus</a> event at the Atlanta Science Festival.',
   outreachVideo:
     "https://drive.google.com/file/d/1J1d-u1OM01Z6d9Sy87omcITtz2qol_px/view",
+  art: [
+    {
+      title: "Voronoi Madness",
+      href: "mathematical-art/voronoi-madness/",
+      meta: "Interactive Voronoi art tool",
+      description:
+        "An exploratory app for seed points, Voronoi cells, curve sampling, and Lloyd relaxation.",
+      visual: "voronoi",
+    },
+    {
+      title: "Kobon Mosaics",
+      href: "mathematical-art/kobon-mosaics/",
+      meta: "Interactive line-arrangement mosaic tool",
+      description:
+        "A generator for arrangements of lines and the polygonal mosaics they cut out.",
+      visual: "kobon",
+    },
+  ],
 };
 
 const root = document.querySelector("#site-root");
@@ -128,6 +146,42 @@ function courseList(className = "course-list") {
   `;
 }
 
+function artEntries(className = "entry", heading = "h3") {
+  return content.art
+    .map(
+      (item) => `
+        <article class="${className} art-entry">
+          <span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>
+          <div>
+            <${heading} class="entry-title">${textLink(item.href, item.title)}</${heading}>
+            <p class="entry-meta">${item.meta}</p>
+            <p>${item.description}</p>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function dossierArtList() {
+  return content.art
+    .map(
+      (item) => `
+        <li class="art-cv-item">
+          <div>
+            <h4>${textLink(item.href, item.title)}</h4>
+            <p>${item.description}</p>
+          </div>
+          <div class="art-cv-side">
+            <span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>
+            <p>${item.meta}</p>
+          </div>
+        </li>
+      `,
+    )
+    .join("");
+}
+
 function dossierTemplate() {
   return `
     <div class="site dossier-site">
@@ -195,6 +249,13 @@ function dossierTemplate() {
                 `,
               )
               .join("")}
+          </ul>
+        </section>
+
+        <section class="cv-block">
+          <h3>Mathematical Art</h3>
+          <ul class="cv-list art-cv-list">
+            ${dossierArtList()}
           </ul>
         </section>
 
@@ -275,6 +336,14 @@ function notebookTemplate() {
         <section class="notebook-spread">
           <div class="notebook-index">
             <span>04</span>
+            <h3>Mathematical Art</h3>
+          </div>
+          <div class="notebook-body">${artEntries("notebook-entry", "h4")}</div>
+        </section>
+
+        <section class="notebook-spread">
+          <div class="notebook-index">
+            <span>05</span>
             <h3>Mentoring / Outreach</h3>
           </div>
           <div class="notebook-body">
@@ -321,6 +390,8 @@ function letterheadTemplate() {
           <div class="letter-section">
             <h2>Slides</h2>
             ${slidesEntry("letter-entry", "h3")}
+            <h2>Mathematical Art</h2>
+            ${artEntries("letter-entry", "h3")}
             <h2>Mentoring / REU</h2>
             ${mentoringEntry("letter-entry", "h3")}
           </div>
@@ -370,6 +441,11 @@ function seminarTemplate() {
         <section class="seminar-column">
           <h2>Teaching</h2>
           ${courseList("seminar-courses")}
+        </section>
+
+        <section class="seminar-column seminar-wide">
+          <h2>Mathematical Art</h2>
+          ${artEntries("seminar-entry", "h3")}
         </section>
 
         <section class="seminar-column seminar-wide">
@@ -423,6 +499,11 @@ function cardsTemplate() {
           <article class="index-card teaching-card">
             <h2>Teaching</h2>
             ${courseList("card-courses")}
+          </article>
+
+          <article class="index-card">
+            <h2>Mathematical Art</h2>
+            ${artEntries("card-entry", "h3")}
           </article>
 
           <article class="index-card">

@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mathematical-art/kobon-mosaics/static/css/main.3a8ef49c.css",
+    "main.js": "/mathematical-art/kobon-mosaics/static/js/main.abfad19b.js",
+    "index.html": "/mathematical-art/kobon-mosaics/index.html",
+    "main.3a8ef49c.css.map": "/mathematical-art/kobon-mosaics/static/css/main.3a8ef49c.css.map",
+    "main.abfad19b.js.map": "/mathematical-art/kobon-mosaics/static/js/main.abfad19b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3a8ef49c.css",
+    "static/js/main.abfad19b.js"
+  ]
+}

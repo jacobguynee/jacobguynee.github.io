@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/mathematical-art/voronoi-madness/static/css/main.24247c2b.css",
+    "main.js": "/mathematical-art/voronoi-madness/static/js/main.310987b9.js",
+    "static/js/453.e1e9ed27.chunk.js": "/mathematical-art/voronoi-madness/static/js/453.e1e9ed27.chunk.js",
+    "index.html": "/mathematical-art/voronoi-madness/index.html",
+    "main.24247c2b.css.map": "/mathematical-art/voronoi-madness/static/css/main.24247c2b.css.map",
+    "main.310987b9.js.map": "/mathematical-art/voronoi-madness/static/js/main.310987b9.js.map",
+    "453.e1e9ed27.chunk.js.map": "/mathematical-art/voronoi-madness/static/js/453.e1e9ed27.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.24247c2b.css",
+    "static/js/main.310987b9.js"
+  ]
+}

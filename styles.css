@@ -297,6 +297,67 @@ button {
   line-height: 1.55;
 }
 
+.art-entry {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.art-entry + .art-entry {
+  margin-top: 1.15rem;
+}
+
+.art-entry p {
+  margin: 0.25rem 0 0;
+}
+
+.art-thumb {
+  display: block;
+  width: 5.25rem;
+  min-height: 4.45rem;
+  border: 1px solid rgba(70, 57, 38, 0.24);
+  background-color: #f7f2e8;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+.art-thumb--voronoi {
+  background:
+    radial-gradient(circle at 24% 28%, rgba(28, 99, 105, 0.92) 0 8%, transparent 9%),
+    radial-gradient(circle at 66% 22%, rgba(181, 141, 69, 0.9) 0 7%, transparent 8%),
+    radial-gradient(circle at 76% 72%, rgba(129, 62, 42, 0.88) 0 9%, transparent 10%),
+    radial-gradient(circle at 30% 74%, rgba(55, 87, 116, 0.88) 0 6%, transparent 7%),
+    conic-gradient(from 20deg at 48% 50%, #f8f0da, #d9e5df, #f1d8bf, #d8e2ef, #f8f0da);
+}
+
+.art-thumb--kobon {
+  background:
+    linear-gradient(28deg, transparent 46%, rgba(31, 37, 40, 0.72) 47% 49%, transparent 50%),
+    linear-gradient(144deg, transparent 43%, rgba(115, 61, 37, 0.78) 44% 46%, transparent 47%),
+    linear-gradient(78deg, transparent 38%, rgba(36, 83, 111, 0.76) 39% 41%, transparent 42%),
+    linear-gradient(116deg, transparent 58%, rgba(181, 141, 69, 0.84) 59% 61%, transparent 62%),
+    linear-gradient(12deg, #f8e7cc 0 28%, #dce8e1 28% 48%, #f0d0ca 48% 66%, #dde4ef 66% 100%);
+}
+
+.art-cv-list {
+  gap: 1.45rem;
+}
+
+.art-cv-item {
+  align-items: stretch;
+}
+
+.art-cv-side {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.art-cv-side .art-thumb {
+  width: 100%;
+  min-height: 4.6rem;
+}
+
 /* Research Notebook */
 
 .notebook-site {
