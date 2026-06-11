@@ -62,6 +62,8 @@ const content = {
       description:
         "After placing a set of points on the plane, a Voronoi diagram is a cell decomposition of the plane such that each cell contains a unique point <span class=\"math-inline\">p</span>, and this cell is exactly the set of points closer to <span class=\"math-inline\">p</span> than any other point. This app allows one to place large amounts of points on the plane, possibly along text they've drawn or inside of regions they've outlined. The app generates the Voronoi diagram and allows for some color customization. Future features include more coloring options and alternate metrics.",
       visual: "voronoi",
+      image: "assets/voronoi-madness-preview.png",
+      imageAlt: "Voronoi diagram spelling Go Birds",
     },
     {
       title: "Kobon Mosaics",
@@ -70,6 +72,8 @@ const content = {
       description:
         "The Kobon triangle problem asks how many triangles can be formed from <span class=\"math-inline\">N</span> lines in the plane. This is an open problem that can be understood, and even worked on, by the general public. This app places lines in the plane and colors the polygons a color according to the number of sides. The user can move the lines, randomly generate a given number of them, and control the colors.",
       visual: "kobon",
+      image: "assets/kobon-mosaics-preview.png",
+      imageAlt: "Kobon Mosaics line arrangement preview",
     },
   ],
 };
@@ -148,12 +152,20 @@ function courseList(className = "course-list") {
   `;
 }
 
+function artVisual(item) {
+  if (item.image) {
+    return `<img class="art-thumb art-thumb-image" src="${item.image}" alt="${item.imageAlt || `${item.title} preview`}">`;
+  }
+
+  return `<span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>`;
+}
+
 function artEntries(className = "entry", heading = "h3") {
   return content.art
     .map(
       (item) => `
         <article class="${className} art-entry">
-          <span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>
+          ${artVisual(item)}
           <div>
             <${heading} class="entry-title">${textLink(item.href, item.title)}</${heading}>
             <p class="entry-meta">${item.meta}</p>
@@ -175,7 +187,7 @@ function dossierArtList() {
             <p>${item.description}</p>
           </div>
           <div class="art-cv-side">
-            <span class="art-thumb art-thumb--${item.visual}" aria-hidden="true"></span>
+            ${artVisual(item)}
             <p>${item.meta}</p>
           </div>
         </li>
