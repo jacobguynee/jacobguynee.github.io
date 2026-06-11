@@ -38,8 +38,7 @@ const content = {
     description: "I was a mentor for a group studying virtual braid groups.",
     project: "Genus-0 Virtual Braids",
     group: "Jerry Gao, Alberto Maga&ntilde;a, Isaiah Williams",
-    poster:
-      "https://drive.google.com/file/d/1_0v828YfqKhIssvewitW0KO_ke33jh3l/view?usp=drive_link",
+    poster: "assets/genus-0-virtual-braids-poster.pdf",
   },
   courses: [
     ["Survey of Calculus", "Spring 2026"],
@@ -90,6 +89,10 @@ function textLink(href, label, className = "") {
   return `<a href="${href}"${externalAttrs(href)}${className ? ` class="${className}"` : ""}>${label}</a>`;
 }
 
+function mentoringPosterLink(label = "poster") {
+  return textLink(content.mentoring.poster, label);
+}
+
 function contactLinks() {
   return `
     <p>Email: <a href="mailto:${content.email}">${content.email}</a></p>
@@ -127,8 +130,8 @@ function mentoringEntry(className = "entry", heading = "h3") {
       <p class="entry-meta">${content.mentoring.meta}</p>
       <p>${content.mentoring.description}</p>
       <p class="entry-detail"><span>Project:</span> ${content.mentoring.project}</p>
+      <p class="entry-detail"><span>Poster:</span> ${mentoringPosterLink()}</p>
       <p class="entry-detail"><span>Group:</span> ${content.mentoring.group}</p>
-      <p class="entry-detail"><span>Poster:</span> ${textLink(content.mentoring.poster, "view poster")}</p>
     </article>
   `;
 }
@@ -285,7 +288,7 @@ function dossierTemplate() {
               <div>
                 <h4>${textLink(content.mentoring.href, content.mentoring.title)}</h4>
                 <p>${content.mentoring.description}</p>
-                <p>Project: ${content.mentoring.project} (${textLink(content.mentoring.poster, "poster")})</p>
+                <p>Project: ${content.mentoring.project} (${mentoringPosterLink()})</p>
                 <p>Group: ${content.mentoring.group}</p>
               </div>
               <p>${content.mentoring.meta}</p>
