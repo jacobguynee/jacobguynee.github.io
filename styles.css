@@ -297,6 +297,25 @@ button {
   line-height: 1.55;
 }
 
+.math-inline {
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+.art-section-body {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.art-intro {
+  max-width: 44rem;
+  margin: 0 0 0.25rem;
+  color: #5f564d;
+  font-family: var(--ui);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
 .art-entry {
   display: grid;
   grid-template-columns: 5.25rem minmax(0, 1fr);
@@ -340,11 +359,11 @@ button {
 }
 
 .art-cv-list {
-  gap: 1.45rem;
+  gap: 1.7rem;
 }
 
 .art-cv-item {
-  align-items: stretch;
+  align-items: start;
 }
 
 .art-cv-side {

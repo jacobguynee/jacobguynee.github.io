@@ -52,13 +52,15 @@ const content = {
     'In Spring 2024, I co-coreographed (with <a href="https://sites.google.com/view/aiyko/home" target="_blank" rel="noopener noreferrer">Aiya Kuchukova</a>) an aerial silks act about braids and knots. The performance was part of the <a href="https://atlantasciencefestival.org/events-2024/808-science-of-the-circus/" target="_blank" rel="noopener noreferrer">Science of the Circus</a> event at the Atlanta Science Festival.',
   outreachVideo:
     "https://drive.google.com/file/d/1J1d-u1OM01Z6d9Sy87omcITtz2qol_px/view",
+  artIntro:
+    "I have created several interactive mathematical art apps. The idea is that one can enjoy them without any knowledge of mathematics, but there is an interesting math concept there for the curious user. They are incomplete, but two of them are below.",
   art: [
     {
       title: "Voronoi Madness",
       href: "mathematical-art/voronoi-madness/",
       meta: "Interactive Voronoi art tool",
       description:
-        "An exploratory app for seed points, Voronoi cells, curve sampling, and Lloyd relaxation.",
+        "After placing a set of points on the plane, a Voronoi diagram is a cell decomposition of the plane such that each cell contains a unique point <span class=\"math-inline\">p</span>, and this cell is exactly the set of points closer to <span class=\"math-inline\">p</span> than any other point. This app allows one to place large amounts of points on the plane, possibly along text they've drawn or inside of regions they've outlined. The app generates the Voronoi diagram and allows for some color customization. Future features include more coloring options and alternate metrics.",
       visual: "voronoi",
     },
     {
@@ -66,7 +68,7 @@ const content = {
       href: "mathematical-art/kobon-mosaics/",
       meta: "Interactive line-arrangement mosaic tool",
       description:
-        "A generator for arrangements of lines and the polygonal mosaics they cut out.",
+        "The Kobon triangle problem asks how many triangles can be formed from <span class=\"math-inline\">N</span> lines in the plane. This is an open problem that can be understood, and even worked on, by the general public. This app places lines in the plane and colors the polygons a color according to the number of sides. The user can move the lines, randomly generate a given number of them, and control the colors.",
       visual: "kobon",
     },
   ],
@@ -254,9 +256,12 @@ function dossierTemplate() {
 
         <section class="cv-block">
           <h3>Mathematical Art</h3>
-          <ul class="cv-list art-cv-list">
-            ${dossierArtList()}
-          </ul>
+          <div class="art-section-body">
+            <p class="art-intro">${content.artIntro}</p>
+            <ul class="cv-list art-cv-list">
+              ${dossierArtList()}
+            </ul>
+          </div>
         </section>
 
         <section class="cv-block">
@@ -338,7 +343,10 @@ function notebookTemplate() {
             <span>04</span>
             <h3>Mathematical Art</h3>
           </div>
-          <div class="notebook-body">${artEntries("notebook-entry", "h4")}</div>
+          <div class="notebook-body">
+            <p class="art-intro">${content.artIntro}</p>
+            ${artEntries("notebook-entry", "h4")}
+          </div>
         </section>
 
         <section class="notebook-spread">
@@ -391,6 +399,7 @@ function letterheadTemplate() {
             <h2>Slides</h2>
             ${slidesEntry("letter-entry", "h3")}
             <h2>Mathematical Art</h2>
+            <p class="art-intro">${content.artIntro}</p>
             ${artEntries("letter-entry", "h3")}
             <h2>Mentoring / REU</h2>
             ${mentoringEntry("letter-entry", "h3")}
@@ -445,6 +454,7 @@ function seminarTemplate() {
 
         <section class="seminar-column seminar-wide">
           <h2>Mathematical Art</h2>
+          <p class="art-intro">${content.artIntro}</p>
           ${artEntries("seminar-entry", "h3")}
         </section>
 
@@ -503,6 +513,7 @@ function cardsTemplate() {
 
           <article class="index-card">
             <h2>Mathematical Art</h2>
+            <p class="art-intro">${content.artIntro}</p>
             ${artEntries("card-entry", "h3")}
           </article>
 
