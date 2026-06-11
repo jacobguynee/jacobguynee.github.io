@@ -7,19 +7,19 @@ const content = {
     "https://drive.google.com/file/d/1rcD-SRMnvjtIptiOlbtC2pMc74YxiAB4/view?usp=drive_link",
   portrait: "assets/jacob-guynee.jpg",
   bio:
-    "I am a fourth-year mathematics PhD student at Georgia Tech working with Dan Margalit. My research interests lie broadly in geometric group theory and low-dimensional topology. More specifically, I am interested in representations of braid groups and applications of braids and knots to the sciences.",
+    "I am a fifth-year mathematics PhD student at Georgia Tech working with Dan Margalit. My research interests lie broadly in geometric group theory and low-dimensional topology. More specifically, I am interested in representations of braid groups and applications of braids and knots to the sciences.",
   papers: [
     {
       title:
         "A theory of inductive loops in electrochemical impedance spectroscopy",
       href: "https://arxiv.org/abs/2301.05024",
-      meta: "with Yury Grabovsky &middot; submitted",
+      meta: "2023 &middot; with Yury Grabovsky &middot; submitted",
     },
     {
       title:
         "GT-shadows for the gentle version of the Grothendieck-Teichmueller group",
       href: "https://arxiv.org/abs/2401.06870",
-      meta: "with Vasily Dolgushev &middot; Journal of Pure and Applied Algebra",
+      meta: "2024 &middot; with Vasily Dolgushev &middot; Journal of Pure and Applied Algebra",
     },
   ],
   slides: {
