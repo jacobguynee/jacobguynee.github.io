@@ -18,17 +18,17 @@ const content = {
     },
     {
       title:
-        "A theory of inductive loops in electrochemical impedance spectroscopy",
-      href: "https://arxiv.org/abs/2301.05024",
-      year: "2023",
-      meta: "with Yury Grabovsky &middot; submitted",
-    },
-    {
-      title:
         "GT-shadows for the gentle version of the Grothendieck-Teichmueller group",
       href: "https://arxiv.org/abs/2401.06870",
       year: "2024",
       meta: "with Vasily Dolgushev &middot; Journal of Pure and Applied Algebra",
+    },
+    {
+      title:
+        "A theory of inductive loops in electrochemical impedance spectroscopy",
+      href: "https://arxiv.org/abs/2301.05024",
+      year: "2023",
+      meta: "with Yury Grabovsky &middot; submitted",
     },
   ],
   slides: {
