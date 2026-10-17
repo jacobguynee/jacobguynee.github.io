@@ -11,6 +11,13 @@ const content = {
   papers: [
     {
       title:
+        "Quasipositive Braids, Presentations, and Garside Structures",
+      href: "https://arxiv.org/abs/2610.12808",
+      year: "2026",
+      meta: "preprint",
+    },
+    {
+      title:
         "A theory of inductive loops in electrochemical impedance spectroscopy",
       href: "https://arxiv.org/abs/2301.05024",
       year: "2023",
